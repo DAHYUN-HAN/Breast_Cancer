@@ -41,7 +41,6 @@ def mask_img(mask_path, full_image_arr, slice_size=512, return_size=False, half=
 			 center_col - idem
 			 too_big - boolean indicating if the mask is bigger than the slice
 	"""
-    print(mask_path)
 	mask = PIL.Image.open(mask_path)    
 	if half:
 		h, w = mask.size
@@ -126,7 +125,7 @@ def random_flip_img_train(img):
     if flipud:
         img = np.flip(img, 0)
         
-    return random_rotate_image_train(img)
+    return random_rotate_img_train(img)
 
 
 def crop_img(img):
