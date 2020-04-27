@@ -125,41 +125,8 @@ def random_flip_img_train(img):
     if flipud:
         img = np.flip(img, 0)
         
-    return random_rotate_img_train(img)
+    return random_rotate_image_train(img)
 
-
-def crop_img(img):
-    slice_size=512
-    tile_size=256
-    img_h = img.shape[0]
-    img_w = img.shape[1]
-    
-    # make sure the image is big enough to use
-    if (img_h < slice_size) or (img_w < slice_size):
-        print("Error - image is wrong size!", img.shape)
-        return np.array([0])
-    
-    # pick a random place to start the crop so that the crop will be the right size
-    start_row = np.random.randint(low=0, high=(img_h - slice_size))
-    start_col = np.random.randint(low=0, high=(img_w - slice_size))
-    
-    end_row = start_row + slice_size
-    end_col = start_col + slice_size
-    
-    # crop the image and randomly rotate it
-    cropped_img = random_flip_img_train(img[start_row:end_row, start_col:end_col])
-    
-    # make sure the image is the right size
-    if cropped_img.shape[0] == cropped_img.shape[1]:
-        # resize it and return it
-        cropped_img = cv2.resize(cropped_img, dsize=(tile_size, tile_size), interpolation=cv2.INTER_CUBIC) 
-        return cropped_img.reshape((tile_size, tile_size, 1))
-    
-    # else repeat until the image is the right size
-    else:
-        return crop_img(img)
-
-
-def random_rotate_img_train(img):
+def random_rotate_image_train(img):
     rotations = np.random.randint(low=-3, high=3)
     return np.rot90(img, rotations)
